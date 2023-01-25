@@ -32,6 +32,8 @@ The following table provides a list of APIs available across the Microsoft Teams
 |[**Get real-time Teams meeting events**](#get-real-time-teams-meeting-events-api)|Fetch real-time meeting events, such as actual start and end time.| [Microsoft Bot Framework SDK](/dotnet/api/microsoft.bot.builder.teams.teamsactivityhandler.onteamsmeetingstartasync?view=botbuilder-dotnet-stable&preserve-view=true) |
 | [**Get incoming audio state**](#get-incoming-audio-state) | Allows an app to get the incoming audio state setting for the meeting user.| [Microsoft Teams JavaScript library](/javascript/api/@microsoft/teams-js/microsoftteams.meeting?view=msteams-client-js-latest&preserve-view=true) |
 | [**Toggle incoming audio**](#toggle-incoming-audio) | Allows an app to toggle the incoming audio state setting for the meeting user from mute to unmute or vice-versa.| [Microsoft Teams JavaScript library](/javascript/api/@microsoft/teams-js/microsoftteams.meeting?view=msteams-client-js-latest&preserve-view=true) |
+| [**Raise Hand API**](#raise-hand-api)| Allows an app to notify hand raised by the user during the meeting.| [Microsoft Teams JavaScript library](/javascript/api/@microsoft/teams-js/meeting.iraisehandstate?view=msteams-client-js-latest&preserve-view=true) |
+| [**Reaction API**](#reaction-api) | Allows an app to notify the reaction given by the user during the meeting.| [Microsoft Teams JavaScript library](/javascript/api/@microsoft/teams-js/meeting.meetingreactiontype?view=msteams-client-js-latest&preserve-view=true) |
 
 ## Get user context API
 
@@ -599,7 +601,7 @@ https://api.captions.office.microsoft.com/cartcaption?meetingid=%7b%22tId%22%3a%
 
 |Resource|Method|Description|
 |----|----|----|
-|/cartcaption|POST|Handle captions for meeting, which was started|
+|/cartcaption|POST|Handle captions for meeting, which was started.|
 
 > [!NOTE]
 > Ensure that the content type for all requests is plain text with UTF-8 encoding. The body of request contains only captions.
@@ -975,6 +977,108 @@ The following table provides the response codes:
 | **501** | API isn't supported in the current context.|
 | **1000** | App doesn't have proper permissions to allow share to stage.|
 
+## Raise Hand API
+
+> [!NOTE]
+>
+> * The Raise Hand API is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
+> * The Raise Hand API isn't applicable for pre-meeting and post-meeting scenarios.
+
+The `onRaisehandChangeHandler` API allows an app to show if the user has raised hand during the meeting. The API is available through the TeamsJS client library.
+
+The following is an example of the payload request:
+
+### Example
+
+```javascript
+
+export interface IRaiseHandState { 
+    /** Indicates whether the selfParticipant's hand is raised or not*/ 
+    isHandRaised: boolean; 
+  } 
+ 
+ 
+  export interface IRaiseHandStateChangedEventData { 
+    /** 
+     * entire raiseHandState object for the selfParticipant 
+     */ 
+    raiseHandState: IRaiseHandState; 
+ 
+ 
+    /** 
+     * error object in case there is a failure 
+     */ 
+    error?: SdkError; 
+  } 
+    { 
+{
+// Shows the hand raised by user when returned true.
+  raiseHandState: { isHandRaised: true }}, 
+
+//Displays error message
+  error: undefined 
+     } 
+
+```
+
+### Query parameters
+
+|Property name|Description|
+|--------------|---------------|
+|IRaiseHandState| Boolean indicating whether the participant's hand is raised or not.|
+|IRaiseHandStateChangedEventData|It's a method indicating if the raiseHand object is called into the class or not.|
+
+### Response code
+
+| Response code | Description |
+|----------------|--------------|
+| 500 | Internal code error, permission failure, reaction not enabled. |
+
+## Reaction API
+
+> [!NOTE]
+>
+> * The Reaction API is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
+> * The `onReactionHandler`API is supported in in-meeting (private and channel) and group calling.
+> * API is supported in modern calling screens only.
+
+The `onReactionHandler` API allows an app to get the status of the users reaction during the meeting. The API is available through the TeamsJS client library.
+
+The following is an example of the payload request:
+
+### Example
+
+```javascript
+export enum MeetingReactionType { 
+    like = 'like', 
+    heart = 'heart', 
+    laugh = 'laugh', 
+    surprised = 'surprised', 
+    applause = 'applause', 
+  } 
+ 
+  export interface IMeetingReactionReceivedEventData { 
+    /** 
+     * Indicates the type of MeetingReaction received 
+     */ 
+    meetingReactionType?: MeetingReactionType; 
+    /** 
+     * error object in case there is a failure 
+     */ 
+    error?: SdkError; 
+  } 
+{ 
+  meetingReactionType: MeetingReactionType.laugh, 
+  error: undefined 
+ } 
+```
+
+### Response code
+
+| Response code | Description |
+|---------------|-------------|
+| 500 | Internal code error, permission failure, reaction not enabled. |
+
 ## Code sample
 
 |Sample name | Description | .NET | Node.js |
@@ -983,14 +1087,9 @@ The following table provides the response codes:
 | Meeting content bubble bot | Teams meeting extensibility sample for interacting with content bubble bot in a meeting. | [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-content-bubble/csharp) |  [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-content-bubble/nodejs)|
 | Meeting side panel | Teams meeting extensibility sample for interacting with the side panel in-meeting. | [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-sidepanel/csharp) | [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-sidepanel/nodejs)|
 | Details Tab in Meeting | Teams meeting extensibility sample for interacting with Details Tab in-meeting. | [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-details-tab/csharp) | [View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-details-tab/nodejs)|
-| Meeting Events Sample | Sample app to show real-time Teams meeting events|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-events/csharp)|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-events/nodejs)|
+| Meeting Events Sample | Sample app to show real-time Teams meeting events.|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-events/csharp)|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meetings-events/nodejs)|
 | Meeting Recruitment Sample |Sample app to show meeting experience for recruitment scenario.|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meeting-recruitment-app/csharp)|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/meeting-recruitment-app/nodejs)|
-| App installation using QR code |Sample app that generates the QR code and installs the app using the QR code|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/app-installation-using-qr-code/csharp)|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/app-installation-using-qr-code/nodejs)|
-
-## Next step
-
-> [!div class="nextstepaction"]
-> [Build tabs for meeting](build-tabs-for-meeting.md)
+| App installation using QR code |Sample app that generates the QR code and installs the app using the QR code.|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/app-installation-using-qr-code/csharp)|[View](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/app-installation-using-qr-code/nodejs)|
 
 ## See also
 

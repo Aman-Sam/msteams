@@ -212,16 +212,155 @@ The following participant roles may be involved during the meeting:
 * **Signer**: This role can sign reviewed documents.
 * **Reader**: This role can view the documents added to the meeting.
 
-## Feature compatibility by user types
+## Reaction API
 
-The following table provides the user types and lists the features that each user can access in meetings:
+> [!NOTE]
+>
+> * The Reaction API is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
+> * The Reaction API works only for apps installed in personal scope. To install an app in personal scope, see [Upload your app in Teams](../concepts/deploy-and-publish/apps-upload.md).
 
-| User type | Scheduled meeting or Instant calendar meeting | One-on-one call | Group call | Scheduled channel meeting |
-| :-- | :-- | :-- | :-- | :-- |
-| In-tenant user | Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. | Presenter or  organizer can start, view, and interact with app on meeting stage. <br><br> Attendee can only view and interact. | Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. | Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. |
-| Guest user | Presenter or  organizer can start, view and interact with app on meeting stage.<br><br> Attendee can only view and interact. | Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. |  Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. | Presenter or  organizer can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. |
-| Federated users or External user | Presenter can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. | Not available | Not available | Presenter can start, view, and interact with app on meeting stage.<br><br> Attendee can only view and interact. |
-| Anonymous user | Not available | Not available | Not available | Not available |
+The Reaction API allows you to react in the meeting stage. The types of reactions include like, heart, laugh, applause, and surprised.
+
+### User scenarios
+
+| Scenario  | Example  |
+|---------|---------|
+|Avatar   | You can react with an animation of the Avatar displaying the reaction.|
+|Mesh     | Participants in a Teams meeting can send reaction form the U-bar and an animation of the reaction is shown in the Mesh app.|
+
+### App manifest settings for the Reaction API
+
+To use the Reaction API, you must configure RSC permissions in the app manifest. Configure the `authorization` property, the `name` and `type` properties in the `resourceSpecific` field as follows:
+
+```JSON
+"authorization": {
+ "permissions": {
+  "orgWide": [],
+  "resourceSpecific": [
+   {
+    "name": "MeetingParticipantReaction.Read.User",
+    "type": "Delegated"
+   },
+  ]
+ }
+}
+```
+
+### Enable the Reaction API in your app
+
+* Call the `registerMeetingReactionReceivedHandler` function.
+
+* Provide a callback that accepts a `meetingReactionType` and an error object. Ensure to check for errors before you call `meetingReactionType`.
+
+The following is an example of `registerMeetingReactionReceivedHandler`:
+
+```JavaScript
+microsoftTeams.meeting.registerMeetingReactionReceivedHandler ( 
+
+          meetingReactionReceivedEvent => { 
+
+            if (meetingReactionReceivedEvent.error) { 
+
+              // handle error 
+
+              setApiResult( 
+
+                `error: ${JSON.stringify(meetingReactionReceivedEvent.error)}` 
+
+              ); 
+
+            } 
+
+            setApiResult( 
+
+              `received reaction type: ${JSON.stringify( 
+
+                meetingReactionReceivedEvent.meetingReactionType 
+
+              )}` 
+
+            ); 
+
+            setShowOutput(true); 
+
+          } 
+
+      ); 
+```
+
+## Raise Hand API
+
+> [!NOTE]
+>
+> * The Raise Hand API is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
+> * The Raise Hand API works only for apps installed in personal scope. To install an app in personal scope, see [Upload your app in Teams](../concepts/deploy-and-publish/apps-upload.md).
+
+The Raise Hand API allows your app to show if the user has raised hand during the meeting.
+
+### User scenarios
+
+| Scenario  | Example  |
+|---------|---------|
+|Avatar   | You can show an animation of the Avatar displaying the reaction.|
+|Mesh     | Participants in a Teams meeting can send reaction form the U-bar and an animation of the reaction is shown in the Mesh app.|
+
+### App manifest settings for the Raise Hand API
+
+To use the Raise Hand API, you must configure RSC permissions in the app manifest. Configure the `authorization` property and the `name` and `type` properties in the `resourceSpecific` field as follows:
+
+```JSON
+"authorization": {
+ "permissions": {
+  "orgWide": [],
+  "resourceSpecific": [
+   {
+    "name": "MeetingParticipantReaction.Read.User",
+    "type": "Delegated"
+   },
+  ]
+ }
+}
+```
+
+### Enable the Raise Hand API in your app
+
+* Register the `registerRaiseHandStateChangeHandler` function.
+
+* Provide a callback that accepts `raiseHandState` and an error object. Ensure to check for errors before you call `raiseHandState`.
+
+Following is an example of the `registerRaiseHandStateChangeHandler`:
+
+```JavaScript
+microsoftTeams.meeting.registerRaiseHandStateChangedHandler( 
+
+          eventData => { 
+
+            if (eventData.error) { 
+
+              // handle error 
+
+              setApiResult( 
+
+                `error: ${JSON.stringify(eventData.error)}` 
+
+              ); 
+
+            } 
+
+            setApiResult( 
+
+              `raiseHandState: ${JSON.stringify( 
+
+                eventData.raiseHandState 
+
+              )}` 
+
+            ); 
+
+          } 
+
+      ); 
+```
 
 ## Code sample
 
@@ -237,10 +376,10 @@ Follow the [step-by-step guide](../sbs-inmeeting-document-signing.yml) to build 
 
 ## See also
 
+* [Meeting app APIs](meeting-apps-apis.md)
 * [Apps for Teams meetings](teams-apps-in-meetings.md)
 * [Enable authentication using third-party OAuth provider](../tabs/how-to/authentication/auth-flow-tab.md)
 * [Resource-specific consent for delegated permissions](../resources/schema/manifest-schema.md#authorizationpermissions)
 * [Create deep links](../concepts/build-and-test/deep-links.md)
-* [Meeting app APIs](meeting-apps-apis.md)
 * [Custom Together Mode scenes](~/apps-in-teams-meetings/teams-together-mode.md)
 * [Live Share SDK](teams-live-share-overview.md)
