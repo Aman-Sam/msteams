@@ -716,8 +716,10 @@ Specify meeting extension definition. For more information, see [custom Together
 
 |Name| Type| Maximum size | Required | Description|
 |---|---|---|---|---|
+|`filters`|array of objects| 100 items||Meeting supported A/V filters.|
 |`scenes`|array of objects| 5 items||Meeting supported scenes.|
 |`supportsStreaming`|Boolean|||A value that indicates whether an app can stream the meeting's audio and video content to a real-time meeting protocol (RTMP) endpoint. The default value is **false**.|
+|`videoAppContentUrl`|string|  2048  characters ||A url which indicates A/V filters' video app content.|
 
 ### meetingExtensionDefinition.scenes
 
@@ -729,6 +731,14 @@ Specify meeting extension definition. For more information, see [custom Together
 |`preview`|||✔️| The relative file path to the scenes' PNG preview icon. |
 |`maxAudience`| integer | 50  |✔️| The maximum number of audiences supported in the scene. |
 |`seatsReservedForOrganizersOrPresenters`| integer | 50 |✔️| The number of seats reserved for organizers or presenters.|
+
+### meetingExtensionDefinition.filters
+
+|Name| Type|Maximum size|Required |Description|
+|---|---|---|---|---|
+|`id`|||✔️| The unique identifier for the A/V filter. This id must be a GUID. |
+|`name`| string | 128 characters |✔️| The name of the A/V filter. |
+|`thumbnail`|||✔️| The relative file path to the A/V filter thumbnail.|
 
 ## authorization
 
@@ -807,3 +817,4 @@ Delegated permissions allow the app to access data on behalf of the signed-in us
 * [Enable app customization](~/concepts/design/enable-app-customization.md)
 * [Localize your app](~/concepts/build-and-test/apps-localization.md)
 * [Integrate media capabilities](~/concepts/device-capabilities/media-capabilities.md)
+* [Video filters for meeting apps](../../apps-in-teams-meetings/video-filters-for-meeting-apps.md)

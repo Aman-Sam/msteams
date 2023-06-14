@@ -100,6 +100,8 @@ landingContent:
 
     - linkListType: whats-new
       links:
+      - text: Video filters for meeting apps
+        url: apps-in-teams-meetings/video-filters-for-meeting-apps.md
       - text: Command bot in Teams
         url: bots/how-to/conversations/command-bot-in-teams.md
       - text: Enable SSO for your bot and message extension app
@@ -205,6 +207,8 @@ landingContent:
   linkLists:        
     - linkListType: tutorial
       links:
+        - text: Video filter app tutorial
+          url: ~/sbs-video-filter-sample-app.yml
         - text: Grant tab device permissions
           url: ~/sbs-tab-device-permissions.yml
         - text: Create Teams conversation bot
@@ -223,8 +227,6 @@ landingContent:
           url: ~/sbs-meeting-token-generator.yml
         - text: Generate meeting sidepanel
           url: ~/sbs-meetings-sidepanel.yml
-        - text: Send activity feed notification 
-          url:  ~/sbs-graphactivity-feedbroadcast.yml
 
 
     - linkListType: tutorial

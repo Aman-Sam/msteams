@@ -104,6 +104,9 @@ conceptualContent:
    # Card
     - title: Explore
       links:
+        - url: /microsoftteams/platform/apps-in-teams-meetings/video-filters-for-meeting-apps.md
+          itemType: concept
+          text: Video filters for meeting apps
         - url: bots/how-to/Teams conversational AI/teams-conversation-ai-overview.md
           itemType: concept
           text: Teams AI library
