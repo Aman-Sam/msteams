@@ -292,4 +292,5 @@ The following table provides the user types and lists the features that each use
 * [Enable SSO for tab app](../tabs/how-to/authentication/tab-sso-overview.md)
 * [Add apps to meetings using Microsoft Graph](/graph/api/chat-post-installedapps?view=graph-rest-1.0&tabs=http&preserve-view=true)
 * [Get change notifications for Microsoft Teams meeting call updates](/graph/changenotifications-for-onlinemeeting)
+* [App caching for your tab app](../tabs/how-to/app-caching-for-your-tab-app.md)
 * [Enable app icon badging for your Teams app](app-icon-badging-for-your-app.md)
