@@ -296,9 +296,9 @@ To trigger the message extension through M365 Chat, follow these steps:
 
 # [Developer Portal for Teams](#tab/developer-portal-for-teams)
 
-To create a bot-based search message extension plugin using Developer portal for Teams, follow these steps:
+To create a bot-based message extension using Developer Portal for Teams, follow these steps:
 
-1. Go to **Teams Developer Portal**.
+1. Go to [**Developer Portal for Teams**](https://dev.teams.microsoft.com/).
 1. Go to **Apps**.
 1. Select **+ New apps**.
 1. Under **Configure**, select **App features**.
@@ -343,11 +343,13 @@ A bot-based search message extension is created.
 
 To test your bot-based message extension created in the Developer Portal for Teams, you can use the following methods:
 
-* **Preview in Teams**: In Developer Portal, open your message extension and select **Preview in Teams** in the upper-right corner. You'll be redirected to Teams, where you can add the app to Teams to preview the app.
+* **Preview in Teams**: In Developer Portal, open your message extension and select **Preview in Teams** in the upper-right corner. You're redirected to Teams, where you can add the app to Teams to preview the app.
 
 * **Download app package**: On the message extension page, select **App package** from the left pane and then, in the upper-left corner of the window, select **Download app package**. The app package is downloaded to your local machine in a .zip file. You can upload the app package to teams and test the message extension.
 
 ---
+
+[!INCLUDE [Developer mode](../includes/bots/message-extension-plugin-developer-mode.md)]
 
 ## Step-by-step guide
 
