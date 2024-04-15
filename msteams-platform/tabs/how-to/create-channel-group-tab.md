@@ -1,23 +1,65 @@
 ---
-title: Create a channel tab or group tab
-description: Create custom channel, group tab with Node.js, ASP.NET Core, ASP.NET Core MVC. Generate app, create package, build and run app, secret tunnel, upload to Teams and build your first app using Blazor.
+title: Create a configurable tab
+description: Create custom channel, group tab with Node.js, ASP.NET Core, ASP.NET Core MVC. Generate app, create package, build and run app, secret tunnel, upload to Teams and build your first app using Blazor
 ms.localizationpriority: high
 ms.topic: quickstart
 zone_pivot_groups: teams-app-environment-blazor
 ms.date: 02/27/2023
 ---
 
-# Create a channel tab or group tab
+# Create a configurable tab
 
-Channel or group tabs deliver content to channels and group chats, which help to create collaborative spaces around dedicated web-based content.
+Configurable tab deliver content to channels and group chats, which help to create collaborative spaces around dedicated web-based content.
 
-Ensure that you've all the [prerequisites](~/tabs/how-to/tab-requirements.md) to build your channel or group tab.
+## Migrate your configurable tab to static tab
+
+> [!NOTE]
+>
+> * Migrating your configurable tab to static tab is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
+> * To migrate your configurable tab to static tab, use the app manifest v1.16 or later.
+
+Static tabs behave more like apps as they are pinnable and unified with optional configuration. Static tabs also support group chat, channels, and meetings. By migrating your configurable tab to static tab, you can build a single tab that works across different scopes, providing a consistent and focused experience. If you have both configurable tab and static tab defined in your app manifest for a specific scope, Teams pins the static tab by default. For more information, see [tabs](~/tabs/what-are-tabs.md).
+
+You can update your existing configurable tab to static tab and add different scopes to the static tab. To change your configurable tab to static tab:
+
+1. Move your configuration logic out of your `configurationUrl` code space to your `contentUrl` code space.
+1. Add the `staticTabs` property to your [app manifest](~/resources/schema/manifest-schema.md#statictabs) with `scopes` and `context` parameters. Following is an example of app manifest where a static tab is defined that works in all scopes and contexts in Teams:
+
+   ```json
+   "staticTabs": [ 
+     { 
+     "entityId": "homeTab", 
+     "scopes": [ 
+       "personal",  
+       "groupChat",
+       "team"
+      ], 
+     "context": [ 
+       "personalTab", 
+       "privateChatTab", 
+       "meetingChatTab", 
+       "meetingDetailsTab", 
+       "meetingSidePanel", 
+       "meetingStage" 
+      ], 
+      "name": "Contoso", 
+      "contentUrl": "https://contoso.com/content (displayed in Teams canvas)", 
+      "websiteUrl": "https://contoso.com/content (displayed in web browser)" 
+     }
+   ],
+   ```
+
+    For more information, see [configuration page](~/tabs/how-to/create-tab-pages/configuration-page.md) and [static tab.](~/tabs/how-to/create-personal-tab.md#extend-static-tabs-to-group-chat-channels-and-meetings)
+
+If your app supports [configurable tab,](~/tabs/how-to/create-tab-pages/configuration-page.md#configuration-page-for-tabs) then you must continue to keep the `configurableTab` property in your app manifest to ensure the backward compatibility of previously pinned tabs. As you can only pin static tabs from now, it's important that previous configurable tabs continue to be supported.
+
+Ensure that you've all the [prerequisites](~/tabs/how-to/tab-requirements.md) to build your configurable tab.
 
 [!INCLUDE [sdk-include](~/includes/sdk-include.md)]
 
 ::: zone pivot="node-java-script"
 
-## Create a custom channel or group tab with Node.js
+## Create a custom configurable tab with Node.js
 
 1. At the command prompt, install the [Yeoman](https://yeoman.io/) and [gulp-cli](https://www.npmjs.com/package/gulp-cli) packages by entering the following command after installing the **Node.js**:
 
@@ -31,9 +73,9 @@ Ensure that you've all the [prerequisites](~/tabs/how-to/tab-requirements.md) to
     npm install generator-teams --global
     ```
 
-## Generate your application with a channel or group tab
+## Generate your application with a configurable tab
 
-1. At the command prompt, create a new directory for your channel or group tab.
+1. At the command prompt, create a new directory for your configurable tab.
 
 1. Enter the following command in your new directory to start the Microsoft Teams app generator:
 
@@ -199,18 +241,18 @@ gulp ngrok-serve
    "composeExtensions": [],
    ```
 
-1. Follow the directions for adding a tab. There's a custom configuration dialog for your channel or group tab.
+1. Follow the directions for adding a tab. There's a custom configuration dialog for your configurable tab.
 1. Select **Save** and your tab is added to the channel's tab bar.
 
     :::image type="content" source="~/assets/images/tab-images/channel-tab-uploaded.png" alt-text="Screenshot shows the uploaded channel tab in Teams.":::
 
-    Your channel or group tab is successfully created and added in Teams.
+    Your configurable tab is successfully created and added in Teams.
 
 ::: zone-end
 
 ::: zone pivot="razor-csharp"
 
-## Create a custom channel or group tab with ASP.NET Core
+## Create a custom configurable tab with ASP.NET Core
 
 1. At the command prompt, create a new directory for your tab project.
 
@@ -220,7 +262,7 @@ gulp ngrok-serve
     git clone https://github.com/OfficeDev/Microsoft-Teams-Samples.git
     ```
 
-## Generate your application with a channel or group tab
+## Generate your application with a configurable tab
 
 1. Open Visual Studio and select **Open a project or solution**.
 
@@ -420,13 +462,13 @@ Ensure that you keep the command prompt with ngrok running and make a note of th
 
     :::image type="content" source="~/assets/images/tab-images/channel-tab-aspnet-uploaded.png" alt-text="Screenshot shows that the channel tab is uploaded.":::
 
-    Your channel or group tab is successfully created and added in Teams.
+    Your configurable tab is successfully created and added in Teams.
 
 ::: zone-end
 
 ::: zone pivot="mvc-csharp"
 
-## Create a custom channel or group tab with ASP.NET Core MVC
+## Create a custom configurable tab with ASP.NET Core MVC
 
 1. At the command prompt, create a new directory for your tab project.
 
@@ -436,7 +478,7 @@ Ensure that you keep the command prompt with ngrok running and make a note of th
     git clone https://github.com/OfficeDev/Microsoft-Teams-Samples.git
     ```
 
-## Generate your application with a channel or group tab
+## Generate your application with a configurable tab
 
 1. Open Visual Studio and select **Open a project or solution**.
 
@@ -635,7 +677,7 @@ Ensure that you keep the command prompt with ngrok running and make a note of th
 
     :::image type="content" source="~/assets/images/tab-images/channel-tab-aspnet-uploaded.png" alt-text="Screenshot shows that the channel tab is uploaded in Teams.":::
 
-    Your channel or group tab is successfully created and added in Teams.
+    Your configurable tab is successfully created and added in Teams.
 
 ::: zone-end
 
@@ -1023,50 +1065,6 @@ You've learned to create, build, and run Teams app with tab capability. The foll
 You've completed the tutorial to build a tab app with Blazor.
 
 ::: zone-end
-
-## Migrate your configurable tab to static tab
-
-> [!NOTE]
->
-> * Migrating your configurable tab to static tab is available only in [public developer preview](~/resources/dev-preview/developer-preview-intro.md).
-> * Migrating your configurable tab to static tab is available only in classic Teams client and isn't available in the [new Teams client](~/resources/teams-updates.md). 
-> * To migrate your configurable tab to static tab, use the app manifest v1.16 or later.
-
-Static tab capability is extended to support group chat, channels, and meetings. You can update your existing configurable tab to static tab and add different scopes to the static tab. 
-
-To change your configurable tab to static tab:
-
-1. Move your configuration logic out of your `configurationUrl` code space to your `contentUrl` code space.
-1. Add the `staticTabs` property to your [app manifest](~/resources/schema/manifest-schema.md#statictabs) with `scopes` and `context` parameters. Following is an example of app manifest where a static tab is defined that works in all scopes and contexts in Teams:
-
-   ```json
-   "staticTabs": [ 
-     { 
-     "entityId": "homeTab", 
-     "scopes": [ 
-       "personal",  
-       "groupChat",
-       "team"
-      ], 
-     "context": [ 
-       "personalTab",
-       "channelTab", 
-       "privateChatTab", 
-       "meetingChatTab", 
-       "meetingDetailsTab", 
-       "meetingSidePanel", 
-       "meetingStage" 
-      ], 
-      "name": "Contoso", 
-      "contentUrl": "https://contoso.com/content (displayed in Teams canvas)", 
-      "websiteUrl": "https://contoso.com/content (displayed in web browser)" 
-     }
-   ],
-   ```
-
-    For more information, see [configuration page](~/tabs/how-to/create-tab-pages/configuration-page.md) and [static tab.](~/tabs/how-to/create-personal-tab.md#extend-static-tabs-to-group-chat-channels-and-meetings)
-
-If your app supports [configurable tab,](~/tabs/how-to/create-tab-pages/configuration-page.md#configuration-page-for-tabs) then you must continue to keep the `configurableTab` property in your app manifest to ensure the backward compatibility of previously pinned tabs. As you can only pin static tabs from now, it's important that previous configurable tabs continue to be supported.
 
 ## Next step
 
