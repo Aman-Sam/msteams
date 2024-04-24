@@ -1,6 +1,6 @@
 ---
 title: Manifest schema reference
-description: In this article, you'll have the latest version of the public manifest schema for Microsoft Teams reference, schema and sample full manifest.
+description: In this article, you have the latest version of the public manifest schema for Microsoft Teams reference, schema, and sample full manifest.
 ms.topic: reference
 ms.localizationpriority: high
 ms.date: 02/09/2023
@@ -535,6 +535,9 @@ A list of commands that your bot can recommend to users. The object is an array 
 |---|---|---|---|---|
 |`items.scopes`|Array of enums|3|✔️|Specifies the scope for which the command list is valid. Options are `team`, `personal`, and `groupChat`.|
 |`items.commands`|Array of objects|10|✔️|An array of commands the bot supports:<br>`title`: the bot command name (string, 32)<br>`description`: a simple description or example of the command syntax and its argument (string, 128).|
+
+> [!NOTE]
+> Teams doesn't support the bot application on the mobile client when app manifest contains empty `commandLists`."
 
 ### bots.commandLists.commands
 
